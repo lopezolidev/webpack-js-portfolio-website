@@ -4,13 +4,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 //eliminamos las instancias de las dependencias para minimizar y optimizar js y css
 const DotEnv = require('dotenv-webpack')
+const WebpackBundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 //instancias
 
 module.exports = {
     entry: './src/index.js',
       // Entry nos permite decir el punto de entrada de nuestra aplicación
     mode: 'development',  
-    watch: true,
+    devtool: 'source-map',
+    //habilita la devtool para webpack
+    watch: true, 
     //webpack "escuchará" el proyecto y lo compilará de forma automática mientras trabajemos
     output: {
         // Output nos permite decir hacia dónde va enviar lo que va a preparar webpack
@@ -109,7 +112,16 @@ module.exports = {
                 }
             ]
         }),
-        new DotEnv()
+        new DotEnv(),
+        new WebpackBundleAnalyzer()
     ],
     //Eliminamos el objeto de optimización debido a que en modo development no es necesario
+    devServer: {
+        static: path.join(__dirname, 'dist'),
+        compress: true,
+        historyApiFallback: true,
+        port: 3006,
+        open: true,
+        //parametros de configuración para correr el servidor de webpack
+    }
 }
