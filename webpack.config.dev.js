@@ -2,15 +2,16 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin'); 
-const DotEnv = require('dotenv-webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+//eliminamos las instancias de las dependencias para minimizar y optimizar js y css
+const DotEnv = require('dotenv-webpack')
 //instancias
 
 module.exports = {
     entry: './src/index.js',
       // Entry nos permite decir el punto de entrada de nuestra aplicación
+    mode: 'development',  
+    watch: true,
+    //webpack "escuchará" el proyecto y lo compilará de forma automática mientras trabajemos
     output: {
         // Output nos permite decir hacia dónde va enviar lo que va a preparar webpack
         path: path.resolve(__dirname, 'dist'),
@@ -108,14 +109,7 @@ module.exports = {
                 }
             ]
         }),
-        new DotEnv(),
-        new CleanWebpackPlugin(),
+        new DotEnv()
     ],
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new CssMinimizerPlugin(),
-            new TerserPlugin(),
-        ]
-    }
+    //Eliminamos el objeto de optimización debido a que en modo development no es necesario
 }
